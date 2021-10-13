@@ -1,12 +1,11 @@
 package main
 
 import (
+	"chapter-c30/common/config"
+	"chapter-c30/common/model"
 	"context"
 	"log"
 	"net"
-
-	"chapter-c30/common/config"
-	"chapter-c30/common/model"
 
 	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc"
@@ -19,7 +18,9 @@ func init() {
 	localStorage.List = make(map[string]*model.GarageList)
 }
 
-type GaragesServer struct{}
+type GaragesServer struct {
+	model.UnimplementedGaragesServer
+}
 
 func (GaragesServer) Add(ctx context.Context, param *model.GarageAndUserId) (*empty.Empty, error) {
 	userId := param.UserId
@@ -29,6 +30,7 @@ func (GaragesServer) Add(ctx context.Context, param *model.GarageAndUserId) (*em
 		localStorage.List[userId] = new(model.GarageList)
 		localStorage.List[userId].List = make([]*model.Garage, 0)
 	}
+
 	localStorage.List[userId].List = append(localStorage.List[userId].List, garage)
 
 	log.Println("Adding garage", garage.String(), "for user", userId)

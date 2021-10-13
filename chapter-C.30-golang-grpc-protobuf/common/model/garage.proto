@@ -1,6 +1,9 @@
 syntax = "proto3";
-
 package model;
+
+import "google/protobuf/empty.proto";
+
+option go_package=".;model";
 
 message GarageCoordinate {
     float latitude = 1;
@@ -8,9 +11,9 @@ message GarageCoordinate {
 }
 
 message Garage {
-    string id = 1;
-    string name = 2;
-    GarageCoordinate coordinate = 3;
+    string id =1;
+    string name =2;
+    GarageCoordinate coordinate =3;
 }
 
 message GarageList {
@@ -18,7 +21,7 @@ message GarageList {
 }
 
 message GarageListByUser {
-    map<string, GarageList> list = 1;
+    map<string, GarageList> list =1;
 }
 
 // ==== for service
@@ -31,8 +34,6 @@ message GarageAndUserId {
     string user_id = 1;
     Garage garage = 2;
 }
-
-import "google/protobuf/Empty.proto";
 
 service Garages {
     rpc List(GarageUserId) returns (GarageList) {}
